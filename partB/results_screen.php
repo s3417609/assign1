@@ -80,11 +80,11 @@ AND wine.winery_id = winery.winery_id
 AND wine.wine_id = inventory.wine_id
 AND wine.wine_id = items.wine_id";
 
-  if (isset($wineName) && $wineName != "All") {
+  if (isset($wineName) && $wineName != "") {
     $query .= " AND wine_name = '{$wineName}'";
   }
 
-  if (isset($wineryName) && $wineryName != "All") {
+  if (isset($wineryName) && $wineryName != "") {
     $query .= " AND winery_name = '{$wineryName}'";
   }
 
