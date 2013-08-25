@@ -16,7 +16,7 @@
 
   require 'db.php';
 
-  function displayWinesList($connection, $query, $wineName) {
+  function displayWinesList($connection, $query) {
     
     if (!($result = @ mysql_query ($query, $connection))) {
       showerror();
@@ -25,7 +25,7 @@
     $rowsFound = @ mysql_num_rows($result);
 
     if ($rowsFound > 0) {
-      print "Details of $wineName wine<br>";
+      print "Details of your wine search<br>";
 
       print "\n<table>\n<tr>" .
           "\n\t<th>Wine name</th>" .
@@ -64,6 +64,7 @@
 
   // get the user data
   $wineName = $_GET['wineName'];
+  $wineryName = $_GET['wineryName'];
 
   if (!mysql_select_db(DB_NAME, $connection)) {
     showerror();
@@ -83,8 +84,12 @@ AND wine.wine_id = items.wine_id";
     $query .= " AND wine_name = '{$wineName}'";
   }
 
+  if (isset($wineryName) && $wineryName != "All") {
+    $query .= " AND winery_name = '{$wineryName}'";
+  }
+
   $query .= " GROUP BY items.wine_id
-  ORDER BY wine_name";
+  ORDER BY wine_name, year";
 
   displayWinesList($connection, $query, $wineName);
 ?>

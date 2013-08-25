@@ -9,7 +9,10 @@
   <form action="results_screen.php" method="GET">
     <br>A wine name (or part of a wine name)
     <input type="text" name="wineName" value="All">
-      (type All to see all wines)
+      (type 'All' to see all wines)
+    <br>A winery name (or part of a winery name)
+    <input type="text" name="wineryName" value="All">
+        (type 'All' to see all wineries)
     <br><input type="submit" value="Show wines">
   </form>
 </body>
