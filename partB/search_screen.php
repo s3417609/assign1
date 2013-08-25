@@ -4,13 +4,12 @@
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-  <title>Explore Wines in a Region</title>
+  <title>Wine is wine</title>
 </head>
-<body bgcolor="white">
-  <form action="04.query_results.php" method="GET">
-    <br>Enter a region to browse :
-    <input type="text" name="regionName" value="All">
-      (type All to see all regions)
+  <form action="results_screen.php" method="GET">
+    <br>A wine name (or part of a wine name)
+    <input type="text" name="wineName" value="All">
+      (type All to see all wines)
     <br><input type="submit" value="Show wines">
   </form>
 </body>
