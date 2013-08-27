@@ -8,6 +8,7 @@
 </head>
 
 <body bgcolor="white">
+
 <?php
 
   function showerror() 
@@ -66,19 +67,56 @@
     {
       print "No records match your search criteria<br>";
     }
-  } 
+  }
+
+  function yearCheck($wineYearLowBound, $wineYearUpBound)
+  {
+    if (isset($wineYearLowBound, $wineYearUpBound))
+    {
+      if ($wineYearLowBound > $wineYearUpBound)
+      {
+        echo 'The right side year must be more recent that the left side year.';
+        return false;
+      }
+      return true;
+    }  
+  }
+
+  function minStockCheck($wineMinStock)
+  {
+    if (isset($_POST['wineMinStock']))
+    {
+      if (wineMinStock < 0)
+      {
+        echo 'a stock cannot be negative';
+        return false;
+      }
+      return true;
+    }  
+  }
+
   
-  if (!($connection = @ mysql_connect(DB_HOST, DB_USER, DB_PW))) {
+  if (!($connection = @ mysql_connect(DB_HOST, DB_USER, DB_PW)))
+  {
     die("Could not connect");
   }
 
-  // get the user data
   $wineName = $_GET['wineName'];
   $wineryName = $_GET['wineryName'];
   $regionName = $_GET['regionName']; 
   $grapeVariety = $_GET['grapeVariety'];
-  $wineYearLowBound = $_GET['wineYearLowBound'];
-  $wineYearUpBound = $_GET['wineYearUpBound'];
+
+  if (yearCheck($_GET['wineYearLowBound'], $_GET['wineYearUpBound']))
+  {
+    $wineYearLowBound = $_GET['wineYearLowBound'];
+    $wineYearUpBound = $_GET['wineYearUpBound'];
+  }
+  else
+  {
+    exit();
+  } 
+
+
   $wineMinStock = $_GET['wineMinStock'];
   $wineMinOrder = $_GET['wineMinOrder'];
   $wineMinCost = $_GET['wineMinCost'];
@@ -88,7 +126,6 @@
     showerror();
   }
 
-  // Start a query ...
   $query = "SELECT wine_name, variety, year, winery_name, region_name, cost,on_hand, qty, SUM(items.price) 
 FROM wine, grape_variety, winery, region, wine_variety, inventory, items
 WHERE wine.wine_id = wine_variety.wine_id
@@ -111,15 +148,15 @@ AND wine.wine_id = items.wine_id";
   {
     $query .= " AND region_name = '{$regionName}'";
   }
-  if (isset($grapeVariety) && $grapeVariety != "All")
+  if (isset($grapeVariety))
   {
     $query .= " AND variety = '{$grapeVariety}'";
   }
-  if (isset($wineYearLowBound) && $wineYearLowBound != "----")
+  if (isset($wineYearLowBound))
   {
     $query .= " AND year >= '{$wineYearLowBound}'";
   }
-  if (isset($wineYearUpBound) && $wineYearUpBound != "----")
+  if (isset($wineYearUpBound))
   {
     $query .= " AND year <= '{$wineYearUpBound}'";
   }
@@ -139,9 +176,6 @@ AND wine.wine_id = items.wine_id";
   {
     $query .= " AND cost  <= '{$wineMaxCost}'";
   }
-
-
-
 
   $query .= " GROUP BY items.wine_id
   ORDER BY wine_name, year";

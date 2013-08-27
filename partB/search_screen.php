@@ -7,6 +7,7 @@
   <title>Wine is wine</title>
 </head>
 <body>
+<b>HELLO LOIC JE PENSAIS QUE LE VIN AUSTRALIEN T'INTERESSAIT PAS =p </b>
   <form action="results_screen.php" method="GET">
     <br>A wine name (or part of a wine name)
     <input type="text" name="wineName" value="">
@@ -54,11 +55,11 @@
         print "<br>\nRegion: ";
         selectDistinct($connection, "region", "region_name", "regionName", "All");
         print "<br>\nGrape Variety: ";
-        selectDistinct($connection, "grape_variety", "variety", "grapeVariety", "All");
+        selectDistinct($connection, "grape_variety", "variety", "grapeVariety", "");
         print "<br>\nFrom: ";
-        selectDistinct($connection, "wine", "year", "wineYearLowBound", "----");
+        selectDistinct($connection, "wine", "year", "wineYearLowBound", "");
         print "\nto: ";
-        selectDistinct($connection, "wine", "year", "wineYearUpBound", "----");
+        selectDistinct($connection, "wine", "year", "wineYearUpBound", "");
 
     ?>
     <br>Minimum wine quantity in stock:
@@ -72,6 +73,14 @@
  
     <br><input type="submit" name="submit" value="Show Wines">
   </form>
+
+  <?php 
+    if ($_GET['wineYearLowBound'] < $_GET['wineYearUpBound'])
+    {
+      echo 'Invalid years input';
+    }
+
+  ?>
 </body>
 </html>
 
