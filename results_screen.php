@@ -30,7 +30,7 @@
     if ($rowsFound > 0) 
     {
       print "\n<table border='1'>" .
-          "\n\t<caption>Details of your wine search</caption>\n" .
+          "\n\t<caption><h2>Details of your wine search</h2></caption>\n" .
           "\n<thead>" .
           "\n\t<tr>" .
           "\n\t<th>Wine name</th>" .

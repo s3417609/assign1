@@ -147,6 +147,8 @@ if (isset($_GET['submit']))
 <title>Wine is wine</title>
 </head>
 <body>
+ 
+ <p> <h1>Wine is wine </h1></p>
 
   <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="GET">
 <br>A wine name (or part of a wine name)
