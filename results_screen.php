@@ -52,7 +52,7 @@
             "\n\t<td>{$row["region_name"]}</td>" .
             "\n\t<td>{$row["cost"]}</td>" .
             "\n\t<td>{$row["on_hand"]}</td>" .
-            "\n\t<td>{$row["qty"]}</td>".
+            "\n\t<td>{$row["SUM(qty)"]}</td>".
             "\n\t<td>{$row["SUM(items.price)"]}</td>\n</tr>";
       }
 
@@ -69,32 +69,6 @@
     }
   }
 
-  function yearCheck($wineYearLowBound, $wineYearUpBound)
-  {
-    if (isset($wineYearLowBound, $wineYearUpBound))
-    {
-      if ($wineYearLowBound > $wineYearUpBound)
-      {
-        echo 'The right side year must be more recent that the left side year.';
-        return false;
-      }
-      return true;
-    }  
-  }
-
-  function minStockCheck($wineMinStock)
-  {
-    if (isset($_POST['wineMinStock']))
-    {
-      if (wineMinStock < 0)
-      {
-        echo 'a stock cannot be negative';
-        return false;
-      }
-      return true;
-    }  
-  }
-
   
   if (!($connection = @ mysql_connect(DB_HOST, DB_USER, DB_PW)))
   {
@@ -105,18 +79,8 @@
   $wineryName = $_GET['wineryName'];
   $regionName = $_GET['regionName']; 
   $grapeVariety = $_GET['grapeVariety'];
-
-  if (yearCheck($_GET['wineYearLowBound'], $_GET['wineYearUpBound']))
-  {
-    $wineYearLowBound = $_GET['wineYearLowBound'];
-    $wineYearUpBound = $_GET['wineYearUpBound'];
-  }
-  else
-  {
-    exit();
-  } 
-
-
+  $wineYearLowBound = $_GET['wineYearLowBound'];
+  $wineYearUpBound = $_GET['wineYearUpBound'];
   $wineMinStock = $_GET['wineMinStock'];
   $wineMinOrder = $_GET['wineMinOrder'];
   $wineMinCost = $_GET['wineMinCost'];
@@ -126,7 +90,7 @@
     showerror();
   }
 
-  $query = "SELECT wine_name, variety, year, winery_name, region_name, cost,on_hand, qty, SUM(items.price) 
+  $query = "SELECT wine_name, variety, year, winery_name, region_name, cost,on_hand, SUM(qty), SUM(items.price) 
 FROM wine, grape_variety, winery, region, wine_variety, inventory, items
 WHERE wine.wine_id = wine_variety.wine_id
 AND wine_variety.variety_id = grape_variety.variety_id
