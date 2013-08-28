@@ -128,10 +128,6 @@ AND wine.wine_id = items.wine_id";
   {
     $query .= " AND on_hand  >= '{$wineMinStock}'";
   }
-  if (isset($wineMinOrder) && $wineMinOrder != "")
-  {
-    $query .= " AND qty  >= '{$wineMinOrder}'";
-  }
   if (isset($wineMinCost) && $wineMinCost != "")
   {
     $query .= " AND cost  >= '{$wineMinCost}'";
@@ -141,8 +137,16 @@ AND wine.wine_id = items.wine_id";
     $query .= " AND cost  <= '{$wineMaxCost}'";
   }
 
-  $query .= " GROUP BY items.wine_id
-  ORDER BY wine_name, year";
+  $query .= " GROUP BY items.wine_id ";
+
+  if (isset($wineMinOrder) && $wineMinOrder != "")
+  {
+    $query .= "HAVING SUM(qty)  >= '{$wineMinOrder}'";
+  }
+
+  $query .= "ORDER BY wine_name, year";
+
+  
 
   displayWinesList($connection, $query, $wineName);
 ?>
